@@ -1,4 +1,4 @@
-module sloth
+module gitee.com/heartgoon/sloth
 
 go 1.18
 
