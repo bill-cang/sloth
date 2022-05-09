@@ -1,5 +1,7 @@
 .idea
+.git
 *.exe
 *.sh
 *_sloth.go
 *_test.go
+
