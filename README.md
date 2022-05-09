@@ -9,10 +9,15 @@ go generate工具：
 2、支持自定义模板：(未完成)
 
 # 用法
+install sloth: 
 
+go install gitee.com/heartgoon/sloth@latest
+
+# 用例
+在需要生成代码的结构体文件添加命令：//go:generate  sloth -out=Bloc,Office -fun=set,get
 
 ```go
-//go:generate  sloth -out=Bloc -fun=set
+//go:generate  sloth -out=Bloc,Office -fun=set,get
 package example
 
 type Bloc struct {
