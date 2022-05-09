@@ -1,0 +1,5 @@
+.idea
+*.exe
+*.sh
+*_sloth.go
+*_test.go
