@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"gitee.com/heartgoon/sloth/model"
 	"github.com/fatih/structtag"
 	"go/ast"
 	"go/printer"
@@ -17,6 +16,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"sloth/model"
 	"strings"
 	"text/template"
 )

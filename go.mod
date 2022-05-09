@@ -1,4 +1,4 @@
-module gitee.com/heartgoon/sloth
+module sloth
 
 go 1.18
 
@@ -12,4 +12,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
 
-replace gitee.com/heartgoon/sloth v1.0.0 => gitee.com/heartgoon/sloth v1.0.0-bd02dba
+//replace gitee.com/heartgoon/sloth v1.0.0 => gitee.com/heartgoon/sloth v1.0.0-bd02dba
+
+
