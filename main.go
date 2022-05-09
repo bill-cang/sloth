@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"gitee.com/heartgoon/sloth/model"
+	"gitee.com/billk/sloth/model"
 	"github.com/fatih/structtag"
 	"go/ast"
 	"go/printer"

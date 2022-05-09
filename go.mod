@@ -1,4 +1,4 @@
-module gitee.com/heartgoon/sloth
+module gitee.com/billk/sloth
 
 go 1.18
 
