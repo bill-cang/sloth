@@ -13,10 +13,6 @@ install sloth:
 
 go install gitee.com/billk/sloth@latest
 
-或
-
-go install github.com/bill-cang/sloth@latest
-
 # 用例
 在需要生成代码的结构体文件添加命令：//go:generate  sloth -out=Bloc,Office -fun=set,get
 
