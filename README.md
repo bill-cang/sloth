@@ -1,8 +1,8 @@
-go generate工具：
+## go generate工具：
 
 1、支持为结构体属性自动生成Get\Set方法，必须参数 
 
-    a、-out：需要自动生成生成代码的结构体（多个时,号分开）
+    a、-out：需要自动生成生成代码的结构体（多个时,号分开）,结构体必须存在。
 
     b、-fun：set|get组合(,号分割)，也可以是单独使用，即-fun=set只生成Set方法，-fun=get只生成Get方法。
 
@@ -15,6 +15,8 @@ go install gitee.com/heartgoon/sloth@latest
 
 # 用例
 在需要生成代码的结构体文件添加命令：//go:generate  sloth -out=Bloc,Office -fun=set,get
+
+在文件过载目录执行命令：go generate
 
 ```go
 //go:generate  sloth -out=Bloc,Office -fun=set,get
