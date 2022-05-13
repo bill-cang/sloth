@@ -1,0 +1,4 @@
+func ({{.Receiver}} *{{.Struct}}) Set{{.Field}}(val {{.Type}}) {
+	{{.Receiver}}.{{.Field}} = val
+	//From custom template
+}

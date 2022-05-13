@@ -26,21 +26,22 @@ const funSetter = "set"
 const tagName = "gorm"
 
 var (
-	outStruct = flag.String("out", "", "comma-separated list of type names; must be set")
-	outFun    = flag.String("fun", "", "comma-separated list of type names; must be set")
-	//outTemplate   = flag.String("tmp", "", "comma-separated list of type names")
+	outStruct     = flag.String("out", "", "comma-separated list of type names; must be set")
+	outFun        = flag.String("fun", "", "comma-separated list of type names; must be set")
+	mod           = flag.String("mod", "", "User defined template directory; The file name must be sloth_getter.tmp|sloth_setter.tmp; Not required")
 	output        = flag.String("output", "", "output file name; default srcdir/<type>_sloth.go")
 	columnCompile = regexp.MustCompile("column:([\\w]+);?")
 	autoFunc      []string
 
-	setTmp, getTmp string
+	customSetter, customGetter string
 )
 
 // Usage is a replacement usage function for the flags package.
 func Usage() {
 	fmt.Fprintf(os.Stderr, "Usage of sloth:\n")
-	fmt.Fprintf(os.Stderr, "\tsloth [flags] -out T [directory]\n")
-	fmt.Fprintf(os.Stderr, "\tsloth [flags] -fun T files... # Must be a single package\n")
+	fmt.Fprintf(os.Stderr, "\tsloth [flags] -out T [structs]\n")
+	fmt.Fprintf(os.Stderr, "\tsloth [flags] -fun T [functions] # Must be a single package\n")
+	fmt.Fprintf(os.Stderr, "\tsloth [flags] -mod T [dir] # Must be a single package\n")
 	fmt.Fprintf(os.Stderr, "For more information, see:\n")
 	fmt.Fprintf(os.Stderr, "\thttps://gitee.com/dwdcth/sloth.git\n")
 	fmt.Fprintf(os.Stderr, "Flags:\n")
@@ -80,6 +81,7 @@ func main() {
 		dir = filepath.Dir(args[0])
 	}
 
+	isCustomTemplate(*mod)
 	//ParseStruct(dir, nil, "access")
 	g.parsePackage(args)
 	// Print the header and package clause.
@@ -103,6 +105,35 @@ func main() {
 		}
 	}
 
+}
+
+//use custom template
+func isCustomTemplate(mod string) {
+	if mod == "" {
+		return
+	}
+	modDir, err := filepath.Abs(mod)
+	if err != nil {
+		panic(fmt.Sprintf("Abs returns an absolute representation of %s, err : %+v", mod, err))
+		return
+	}
+	modDir = strings.Replace(modDir, "\\", "/", -1)
+	tmps := []string{"sloth_getter.tmp", "sloth_setter.tmp"}
+	for _, tmp := range tmps {
+		tmpAbsAddr := strings.Join([]string{modDir, tmp}, "/")
+		redr, err := ioutil.ReadFile(tmpAbsAddr)
+		if err != nil {
+			panic(fmt.Sprintf("Abs %s read failed, err =%+v.", tmpAbsAddr, err))
+			return
+		}
+		tp := string(redr)
+		//log.Printf("[isCustomTemplate] the mod =%s.", tp)
+		if strings.Contains(tmp, funGetter) {
+			customGetter = tp
+		} else {
+			customSetter = tp
+		}
+	}
 }
 
 // isDirectory reports whether the named file is a directory.
@@ -139,7 +170,6 @@ type File struct {
 	fileSet *token.FileSet
 	// These fields are reset for each type being generated.
 	typeName string // Name of the constant type.
-
 }
 
 type Package struct {
@@ -188,6 +218,7 @@ func (g *Generator) addPackage(pkg *packages.Package) {
 
 // generate produces the String method for the named type.
 func (g *Generator) generate(typeName string) {
+	tpts := getTemplate()
 	for _, file := range g.pkg.files { //按包来的，读取包下的所有文件
 		// Set the state for this run of the walker.
 		file.typeName = typeName
@@ -195,7 +226,7 @@ func (g *Generator) generate(typeName string) {
 		if file.file != nil {
 
 			//自定义模板检查
-			/*			if *outTemplate != "" {
+			/*			if *mdo != "" {
 
 						}*/
 
@@ -217,9 +248,9 @@ func (g *Generator) generate(typeName string) {
 					for _, access := range autoFunc {
 						switch access {
 						case funSetter:
-							g.Printf(stName, "%s\n", genSetter(stName, field.Name, field.column, field.Type))
+							g.Printf(stName, "%s\n", genSetter(tpts[1], stName, field.Name, field.column, field.Type))
 						case funGetter:
-							g.Printf(stName, "%s\n", genGetter(stName, field.Name, field.Type))
+							g.Printf(stName, "%s\n", genGetter(tpts[0], stName, field.Name, field.Type))
 						}
 					}
 				}
@@ -228,6 +259,24 @@ func (g *Generator) generate(typeName string) {
 		}
 	}
 
+}
+
+func getTemplate() []*template.Template {
+	tptGetter := template.New("getter")
+	if customSetter != "" {
+		tptGetter = template.Must(tptGetter.Parse(customGetter))
+	} else {
+		tptGetter = template.Must(tptGetter.Parse(model.GetterTemplate))
+	}
+
+	tptSetter := template.New("setter")
+	if customSetter != "" {
+		tptSetter = template.Must(tptSetter.Parse(customSetter))
+	} else {
+		tptSetter = template.Must(tptSetter.Parse(model.SetterTemplate))
+	}
+
+	return []*template.Template{tptGetter, tptSetter}
 }
 
 type StructFieldInfo struct {
@@ -301,11 +350,9 @@ func ParseStruct(file *ast.File, fileSet *token.FileSet, tagName string) (struct
 	return structMap, nil
 }
 
-func genSetter(structName, fieldName, column, typeName string) string {
-	t := template.New("setter")
-	t = template.Must(t.Parse(model.SetterTemplate))
+func genSetter(tpt *template.Template, structName, fieldName, column, typeName string) string {
 	res := bytes.NewBufferString("")
-	t.Execute(res, map[string]string{
+	tpt.Execute(res, map[string]string{
 		"Receiver": strings.ToLower(structName[0:1]),
 		"Struct":   structName,
 		"Field":    fieldName,
@@ -315,9 +362,7 @@ func genSetter(structName, fieldName, column, typeName string) string {
 	return res.String()
 }
 
-func genGetter(structName, fieldName, typeName string) string {
-	t := template.New("getter")
-	t = template.Must(t.Parse(model.GetterTemplate))
+func genGetter(t *template.Template, structName, fieldName, typeName string) string {
 	res := bytes.NewBufferString("")
 	t.Execute(res, map[string]string{
 		"Receiver": strings.ToLower(structName[0:1]),
