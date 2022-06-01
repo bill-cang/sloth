@@ -2,9 +2,9 @@ package main
 
 import (
 	"bytes"
+	_ "embed"
 	"flag"
 	"fmt"
-	"gitee.com/billk/sloth/model"
 	"github.com/fatih/structtag"
 	"go/ast"
 	"go/printer"
@@ -261,19 +261,26 @@ func (g *Generator) generate(typeName string) {
 
 }
 
+var (
+	//go:embed model/sloth_getter.tmp
+	getterTemplate string
+	//go:embed model/sloth_setter.tmp
+	setterTemplate string
+)
+
 func getTemplate() []*template.Template {
 	tptGetter := template.New("getter")
 	if customSetter != "" {
 		tptGetter = template.Must(tptGetter.Parse(customGetter))
 	} else {
-		tptGetter = template.Must(tptGetter.Parse(model.GetterTemplate))
+		tptGetter = template.Must(tptGetter.Parse(getterTemplate))
 	}
 
 	tptSetter := template.New("setter")
 	if customSetter != "" {
 		tptSetter = template.Must(tptSetter.Parse(customSetter))
 	} else {
-		tptSetter = template.Must(tptSetter.Parse(model.SetterTemplate))
+		tptSetter = template.Must(tptSetter.Parse(setterTemplate))
 	}
 
 	return []*template.Template{tptGetter, tptSetter}
