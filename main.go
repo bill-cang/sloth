@@ -26,9 +26,9 @@ const funSetter = "set"
 const tagName = "gorm"
 
 var (
-	outStruct     = flag.String("out", "", "comma-separated list of type names; must be set")
-	outFun        = flag.String("fun", "", "comma-separated list of type names; must be set")
-	mod           = flag.String("mod", "", "User defined template directory; The file name must be sloth_getter.tmp|sloth_setter.tmp; Not required")
+	outStruct     = flag.String("out", "", "需要输出的结构体 ; must be set")
+	outFun        = flag.String("fun", "", "需要生成的方法(Set|Get); must be set")
+	mod           = flag.String("mod", "", "自定义模板(绝对路径); The file name must be sloth_getter.tmp|sloth_setter.tmp; Not required")
 	output        = flag.String("output", "", "output file name; default srcdir/<type>_sloth.go")
 	columnCompile = regexp.MustCompile("column:([\\w]+);?")
 	autoFunc      []string
