@@ -1,3 +1,4 @@
+
 func ({{.Receiver}} *{{.Struct}}) Get{{.Field}}() {{.Type}} {
 	return {{.Receiver}}.{{.Field}}
 }
