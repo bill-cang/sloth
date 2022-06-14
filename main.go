@@ -358,7 +358,7 @@ func ParseStruct(file *ast.File, fileSet *token.FileSet, tagName string) (struct
 }
 
 func genSetter(tpt *template.Template, structName, fieldName, column, typeName string) string {
-	res := bytes.NewBufferString("")
+	res := bytes.NewBufferString("\t")
 	tpt.Execute(res, map[string]string{
 		"Receiver": strings.ToLower(structName[0:1]),
 		"Struct":   structName,
@@ -370,7 +370,7 @@ func genSetter(tpt *template.Template, structName, fieldName, column, typeName s
 }
 
 func genGetter(t *template.Template, structName, fieldName, typeName string) string {
-	res := bytes.NewBufferString("")
+	res := bytes.NewBufferString("\t")
 	t.Execute(res, map[string]string{
 		"Receiver": strings.ToLower(structName[0:1]),
 		"Struct":   structName,
