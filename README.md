@@ -78,85 +78,55 @@ bloc_sloth.go
 
 package example
 
-
 func (b *Bloc) SetName(val string) {
 	b.Name = val
-	//b.Update("name",val)
 }
-
 func (b *Bloc) GetName() string {
 	return b.Name
 }
-
-
 func (b *Bloc) SetLogo(val string) {
 	b.Logo = val
-	//b.Update("logo",val)
 }
-
 func (b *Bloc) GetLogo() string {
 	return b.Logo
 }
-
-
 func (b *Bloc) SetMaster(val string) {
 	b.Master = val
-	//b.Update("master",val)
 }
-
 func (b *Bloc) GetMaster() string {
 	return b.Master
 }
-
-
 func (b *Bloc) SetPhone(val string) {
 	b.Phone = val
-	//b.Update("phone",val)
 }
-
 func (b *Bloc) GetPhone() string {
 	return b.Phone
 }
-
-
 func (b *Bloc) SetEmail(val string) {
 	b.Email = val
-	//b.Update("email",val)
 }
-
 func (b *Bloc) GetEmail() string {
 	return b.Email
 }
-
-
 func (b *Bloc) SetProvinceID(val string) {
 	b.ProvinceID = val
-	//b.Update("province_id",val)
 }
-
 func (b *Bloc) GetProvinceID() string {
 	return b.ProvinceID
 }
-
-
 func (b *Bloc) SetCityID(val string) {
 	b.CityID = val
-	//b.Update("city_id",val)
 }
-
 func (b *Bloc) GetCityID() string {
 	return b.CityID
 }
-
-
 func (b *Bloc) SetAddress(val string) {
 	b.Address = val
-	//b.Update("address",val)
 }
-
 func (b *Bloc) GetAddress() string {
 	return b.Address
 }
+
 
 
 
@@ -169,84 +139,54 @@ office_sloth.go
 
 package example
 
-
 func (o *Office) SetName(val string) {
 	o.Name = val
-	//o.Update("name",val)
 }
-
 func (o *Office) GetName() string {
 	return o.Name
 }
-
-
 func (o *Office) SetLogo(val string) {
 	o.Logo = val
-	//o.Update("logo",val)
 }
-
 func (o *Office) GetLogo() string {
 	return o.Logo
 }
-
-
 func (o *Office) SetMaster(val string) {
 	o.Master = val
-	//o.Update("master",val)
 }
-
 func (o *Office) GetMaster() string {
 	return o.Master
 }
-
-
 func (o *Office) SetEmail(val string) {
 	o.Email = val
-	//o.Update("email",val)
 }
-
 func (o *Office) GetEmail() string {
 	return o.Email
 }
-
-
 func (o *Office) SetPhone(val string) {
 	o.Phone = val
-	//o.Update("phone",val)
 }
-
 func (o *Office) GetPhone() string {
 	return o.Phone
 }
-
-
 func (o *Office) SetAddress(val string) {
 	o.Address = val
-	//o.Update("address",val)
 }
-
 func (o *Office) GetAddress() string {
 	return o.Address
 }
-
-
 func (o *Office) SetProvinceID(val string) {
 	o.ProvinceID = val
-	//o.Update("province_id",val)
 }
-
 func (o *Office) GetProvinceID() string {
 	return o.ProvinceID
 }
-
-
 func (o *Office) SetCityID(val string) {
 	o.CityID = val
-	//o.Update("city_id",val)
 }
-
 func (o *Office) GetCityID() string {
 	return o.CityID
 }
+
 
 ```
