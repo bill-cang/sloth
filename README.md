@@ -1,4 +1,4 @@
-## go generate工具：
+## sloth 工具：
 
 1、支持为结构体属性自动生成Get\Set方法，必须参数 
 
