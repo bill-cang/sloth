@@ -37,7 +37,7 @@ func ({{.Receiver}} *{{.Struct}}) Set{{.Field}}(val {{.Type}}) {
 
 install sloth:
 
-go install gitee.com/billk/sloth@latest
+go install github.com/bill-cang/sloth@latest
 
 # 用例
 

@@ -1,4 +1,4 @@
-module gitee.com/billk/sloth
+module github.com/bill-cang/sloth
 
 go 1.18
 
